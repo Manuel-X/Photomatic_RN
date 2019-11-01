@@ -1,12 +1,17 @@
 import React from 'react';
 
 import MyStack from "./Navigation";
-import CameraPage from "./Components/FaceDetection/CameraPage";
+import { Provider } from "react-redux";
+
+import store from "./store";
 
 export default class App extends React.Component {
     render() {
         return (
-            <MyStack />
+            <Provider store={store}>
+                 <MyStack />
+            </Provider>
+           
         );
     };
 };

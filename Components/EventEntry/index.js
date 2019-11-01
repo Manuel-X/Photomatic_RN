@@ -1,6 +1,9 @@
 import React, { Component } from 'react'
 import {View,Text} from 'react-native'
 import {Button, TextInput, StyleSheet} from "react-native"
+import actionCreators from '../../store/actions'
+
+import { connect } from "react-redux";
 
  class EventEntry extends Component {
      state = {
@@ -34,7 +37,18 @@ import {Button, TextInput, StyleSheet} from "react-native"
   }
 }
 
-export default EventEntry
+
+const mapDispatchToProps  = dispatch => {
+  return {
+    //Real parameters names
+    getEventDetail: (eventID) => dispatch(actionCreators.getEventDetail(eventID)),
+  };
+};
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(EventEntry);
 
 
 const styles = StyleSheet.create({
