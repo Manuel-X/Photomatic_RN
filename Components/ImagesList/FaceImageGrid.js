@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Dimensions, TouchableOpacity, Image } from 'react-native';
+import { View, Dimensions, TouchableOpacity, Image, ImageBackground } from 'react-native';
 
 const { width: winWidth, height: winHeight } = Dimensions.get('window');
 import { Icon } from 'react-native-elements'
@@ -10,15 +10,40 @@ import { connect } from "react-redux";
 
 import styles from './styles';
 
+import LargeImage from './LargeImage'
+
+
+
 
  class FaceImageGrid extends Component {
+  state = {
+    modalVisible:false,
+}
 
+
+  handlePress = () => {
+    this.setState({modalVisible:true})   
+}
+
+handlePressOut = () => {
+  this.setState({modalVisible:false})   
+}
+
+handleSelectChoice = () => {
+  if(this.props.faceImagesList[this.props.i].selected) this.props.deselectImage(this.props.i)
+  else this.props.selectImage(this.props.i)
+}
 
   render() {
+
+
     return (
+   
     <View style={{marginLeft:winWidth*0.01, marginBottom:winWidth*0.01}}>
         <View>
-        <Image source={{uri:this.props.image}} style={{height:winWidth*0.3, width:winWidth*0.32}}/>
+        <TouchableOpacity onPress={this.handleSelectChoice} onLongPress={this.handlePress} onPressOut={this.handlePressOut} >
+        <ImageBackground source={{uri:this.props.image}} blurRadius={this.props.blurValue} style={{ height:winWidth*0.3, width:winWidth*0.32}}/>
+        </TouchableOpacity>
         <View style={{width:winWidth*0.32,height:30, backgroundColor:"black",opacity:0.4, position:"absolute", bottom:0}}></View>
         <View style={styles.selectionButton}>
             {this.props.faceImagesList[this.props.i].selected?
@@ -39,9 +64,10 @@ import styles from './styles';
             />
             </TouchableOpacity>
             }
+            
         </View>
         </View>
-
+        <LargeImage image={this.props.image} modalVisible={this.state.modalVisible}/>
         
     </View>
     )
@@ -51,6 +77,7 @@ import styles from './styles';
 const mapStateToProps  = state => {
     return {
       faceImagesList: state.faceImagesListReducer.faceImagesList ,
+      blurValue: state.faceImagesListReducer.blurValue 
     };
   };
 

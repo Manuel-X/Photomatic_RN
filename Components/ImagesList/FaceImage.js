@@ -3,7 +3,7 @@ import { View, Dimensions, TouchableOpacity} from 'react-native';
 import Image from 'react-native-scalable-image';
 const { width: winWidth, height: winHeight } = Dimensions.get('window');
 import { Icon } from 'react-native-elements'
-import {PinchGestureHandler} from 'react-native-gesture-handler'
+import {PinchGestureHandler, TouchableWithoutFeedback} from 'react-native-gesture-handler'
 
 import * as actionCreators from '../../store/actions'
 
@@ -14,12 +14,18 @@ import styles from './styles';
 
  class FaceImage extends Component {
 
+  handleSelectChoice = () => {
+    if(this.props.faceImagesList[this.props.i].selected) this.props.deselectImage(this.props.i)
+    else this.props.selectImage(this.props.i)
+  }
 
   render() {
     return (
     <View style={{marginBottom:20}}>
         <View style={styles.container} collapsable={false}>
+          <TouchableWithoutFeedback onPress={this.handleSelectChoice} > 
         <Image source={{uri:this.props.image}} width={winWidth}/>
+        </TouchableWithoutFeedback>
         </View>
         <View style={{width:winWidth,height:40, backgroundColor:"black",opacity:0.4, position:"absolute", bottom:0}}></View>
         <View style={styles.selectionButton}>

@@ -3,14 +3,14 @@ import * as actionTypes from "../actions/types";
 const initialState = {
     faceImagesList: [{image:"https://netstorage-legit.akamaized.net/images/vllkyt4avcu5o8j6v.jpg",selected:false},{image:"https://i2-prod.mirror.co.uk/incoming/article10718834.ece/ALTERNATES/s1200b/Argentine-football-star-Lionel-Messi-and.jpg", selected:false}, {image:"https://images2.minutemediacdn.com/image/upload/c_fill,w_912,h_516,f_auto,q_auto,g_auto/shape/cover/sport/595a09852ad9e54e48000001.jpg",selected:false}, {image:"https://i2-prod.irishmirror.ie/incoming/article10718951.ece/ALTERNATES/s615b/Lionel-Messi-and-Antonela-Rocuzzos-Wedding.jpg",selected:false}, {image:"https://i.pinimg.com/originals/ec/41/b4/ec41b4cef7099c1c1faf812f25f6a9df.jpg", selected:false}, {image:"https://i.dailymail.co.uk/i/pix/2017/07/02/11/41F612A100000578-4658578-image-m-10_1498989696960.jpg",selected:false} ],   
     loading: false, //true
-    selectedImages: []
+    selectedImages: [],
   };
 
 const faceImagesListReducer = (state = initialState, action) => {
     switch (action.type) {
       case actionTypes.SEND_FACE_GET_IMAGES:
         return {
-          ...state,
+          ...state, 
           faceImagesList: action.payload,
           loading: false,
         };

@@ -18,9 +18,12 @@ import { connect } from "react-redux";
 import styles from './styles';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
+import LargeImage from './LargeImage'
 
 
  class ImagesList extends React.Component {
+
+
   FaceImageElement = React.createRef();
 
   static navigationOptions = () => {
@@ -34,7 +37,9 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
    ))
      render (){
         return(
+          
             <View style={{marginBottom:50}} >
+             
             <View style={{color:"white", width:winWidth,backgroundColor:"#90d4ed", height:winHeight/13, position:"absolute", top:0}}></View>
       <View style={{flexDirection:"row"}}>
               <GradientButton
@@ -90,8 +95,8 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
                       </View>
                     </ScrollView>
                 }
+                
                 <View style={{width:winWidth,height:40, backgroundColor:"white"}}></View>
-               
             </View>
         
         )
