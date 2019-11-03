@@ -7,7 +7,7 @@ import GradientButton from 'react-native-gradient-buttons'
 
 import Image from 'react-native-scalable-image';
 
-import FaceImageGrid from "./FaceImageGrid"
+import FaceImage from "./FaceImage"
  
 const { width: winWidth, height: winHeight } = Dimensions.get('window');
 
@@ -20,7 +20,8 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 
 
 
- class ImagesList extends React.Component {
+ class ImagesList extends React.Component {  
+   
   FaceImageElement = React.createRef();
 
   static navigationOptions = () => {
@@ -28,16 +29,15 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
       title: "Photos you are featured in",
     };
   };
-
   imagesList = this.props.faceImagesList.map( (img,index) => (   
-    <FaceImageGrid ref={this.FaceImageElement} image={img.image} i={index}/>
+    <FaceImage ref={this.FaceImageElement} image={img.image} i={index}/>
    ))
      render (){
         return(
-            <View style={{marginBottom:50}} >
+            <View style={{marginBottom:100}} >
             <View style={{color:"white", width:winWidth,backgroundColor:"#90d4ed", height:winHeight/13, position:"absolute", top:0}}></View>
       <View style={{flexDirection:"row"}}>
-              <GradientButton
+      <GradientButton
       style={{ marginVertical: 2, fontWeight:"300" }}
       text="Select"
           
@@ -75,19 +75,15 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
      >
      Download
      </GradientButton>
-     <TouchableOpacity onPress={()=>this.props.navigation.replace("ListView")}>
-     <ImageBackground source={{uri:"https://static.thenounproject.com/png/690222-200.png"}} style={{height:winHeight/15, width:winWidth/10}}></ImageBackground>
+     <TouchableOpacity onPress={()=>this.props.navigation.replace("ImagesList")}>
+     <ImageBackground source={{uri:"https://image.flaticon.com/icons/png/128/25/25617.png"}} style={{height:winHeight/15, width:winWidth/10}}></ImageBackground>
      </TouchableOpacity>
     </View>
-    <Text style={{textAlign:"center",color:"white",fontWeight:"500",fontSize:20, width:winWidth,backgroundColor:"#90d4ed", height:winHeight/24}}> {this.props.selectedImages.length}/{this.props.faceImagesList.length} selected </Text>
-
-  
+    <Text style={{textAlign:"center",color:"white",fontWeight:"500",fontSize:20, width:winWidth,backgroundColor:"#90d4ed", height:winHeight/24}}> {this.props.selectedImages.length}/{this.props.faceImagesList.length} selected</Text>
 
                 {this.props.loading?<Image source={{ uri:"https://i.ibb.co/nPPqsyF/ezgif-com-gif-maker-1.gif" }} style={styles.galleryImage} />:
                     <ScrollView>
-                      <View style={{flex:1,flexDirection:"row", flexWrap:'wrap'}}>
                       {this.imagesList}
-                      </View>
                     </ScrollView>
                 }
                 <View style={{width:winWidth,height:40, backgroundColor:"white"}}></View>

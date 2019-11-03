@@ -9,6 +9,12 @@ export default StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
+    selectionButton: {
+        position:"absolute",
+        alignSelf: 'flex-end',
+        bottom:0
+
+    },
     preview: {
         height: winHeight,
         width: winWidth,

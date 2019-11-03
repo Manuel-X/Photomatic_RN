@@ -113,9 +113,10 @@ export default class CameraPage extends React.Component {
         }
 
         return (
-            <React.Fragment>
+            <React.Fragment style={{width:winWidth*1.3}}>
                 <View>
                     <Camera
+                        ratio="16:9"
                         type={cameraType}
                         style={styles.preview}
                         ref={camera => this.camera = camera}

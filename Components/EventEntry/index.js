@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import {View,Text} from 'react-native'
 import {Button, TextInput, StyleSheet} from "react-native"
-import actionCreators from '../../store/actions'
+import * as actionCreators from '../../store/actions'
 
 import { connect } from "react-redux";
 
@@ -14,7 +14,8 @@ import { connect } from "react-redux";
       };
 
     handleSubmit = () => {
-        this.props.navigation.navigate("FaceDetection")
+      this.props.getEventDetail(2)
+      this.props.navigation.navigate("FaceDetection")
     }
   render() {
     return (

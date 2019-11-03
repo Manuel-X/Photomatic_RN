@@ -4,6 +4,7 @@ import MyStack from "./Navigation";
 import { Provider } from "react-redux";
 
 import store from "./store";
+import ImagesList from './Components/ImagesList/'
 
 export default class App extends React.Component {
     render() {
@@ -11,7 +12,6 @@ export default class App extends React.Component {
             <Provider store={store}>
                  <MyStack />
             </Provider>
-           
-        );
+       );
     };
 };

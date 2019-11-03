@@ -2,6 +2,7 @@ import axios from "axios";
 import * as actionTypes from "./types";
 
 export const getEventDetail = (eventID) => {
+    console.log("Event Detail requested!!!!")
     return async dispatch => {
       dispatch(setEventDetailLoading());
       try {

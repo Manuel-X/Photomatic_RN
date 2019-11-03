@@ -21,6 +21,29 @@ export const getFaceImagesList = (faceImgBase64, eventID) => {
     };
   };
 
+  export const selectAllImages = () => ({
+    type: actionTypes.SELECTALL_IMAGES,
+  
+  });
+
+  export const deSelectAllImages = () => ({
+    type: actionTypes.DESELECTALL_IMAGES,
+  
+  });
+
+  export const selectImage = (index) => {
+    return{
+    type: actionTypes.SELECT_IMAGE,
+    index:index
+    }
+  };
+
+  export const deselectImage = (index) => ({
+    type: actionTypes.DESELECT_IMAGE,
+    index:index
+  });
+
+
   export const setFaceDetectingLoading = () => ({
     type: actionTypes.FACEDETECTING_LOADING
   });
