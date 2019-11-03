@@ -113,7 +113,7 @@ export default class CameraPage extends React.Component {
         }
 
         return (
-            <React.Fragment style={{width:winWidth*1.3}}>
+            <React.Fragment>
                 <View>
                     <Camera
                         ratio="16:9"
