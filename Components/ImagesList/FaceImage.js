@@ -3,7 +3,10 @@ import { View, Dimensions, TouchableOpacity} from 'react-native';
 import Image from 'react-native-scalable-image';
 const { width: winWidth, height: winHeight } = Dimensions.get('window');
 import { Icon } from 'react-native-elements'
-import {PinchGestureHandler, TouchableWithoutFeedback} from 'react-native-gesture-handler'
+import { TouchableWithoutFeedback} from 'react-native-gesture-handler'
+
+
+
 
 import * as actionCreators from '../../store/actions'
 
@@ -13,6 +16,7 @@ import styles from './styles';
 
 
  class FaceImage extends Component {
+  pinZoomLayoutRef=React.createRef();
 
   handleSelectChoice = () => {
     if(this.props.faceImagesList[this.props.i].selected) this.props.deselectImage(this.props.i)
@@ -20,11 +24,18 @@ import styles from './styles';
   }
 
   render() {
+
+
     return (
     <View style={{marginBottom:20}}>
+    
         <View style={styles.container} collapsable={false}>
-          <TouchableWithoutFeedback onPress={this.handleSelectChoice} > 
+          <TouchableWithoutFeedback onPress={this.handleSelectChoice} >  
+
+ 
+        
         <Image source={{uri:this.props.image}} width={winWidth}/>
+
         </TouchableWithoutFeedback>
         </View>
         <View style={{width:winWidth,height:40, backgroundColor:"black",opacity:0.4, position:"absolute", bottom:0}}></View>
@@ -48,6 +59,7 @@ import styles from './styles';
             </TouchableOpacity>
             }
         </View>
+
         </View>
 
 

@@ -22,7 +22,7 @@ const { width: winWidth, height: winHeight } = Dimensions.get('window');
             <View style={{left:winWidth*0.05, position:"absolute", height:winHeight, flex: 1, justifyContent: 'center', alignItems: 'center'}}>
             <View style={{height:30, backgroundColor:"white", width:winWidth*0.9, borderTopLeftRadius:20, borderTopRightRadius:20}}></View>
             <Image width={winWidth*0.9} source={{uri: this.props.image}}></Image>
-            <View style={{height:30, backgroundColor:"white", width:winWidth*0.9, borderBottomLeftRadius:20, borderBottom4RightRadius:20}}></View>
+            <View style={{height:30, backgroundColor:"white", width:winWidth*0.9, borderBottomLeftRadius:20, borderBottomRightRadius:20}}></View>
             </View>
         </Modal>
      

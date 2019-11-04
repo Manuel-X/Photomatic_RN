@@ -1,4 +1,5 @@
 {
+  
   "expo": {
     "name": "Photomatic",
     "slug": "Photomatic",
@@ -27,3 +28,6 @@
     }
   }
 }
+
+
+
