@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { View, Dimensions, TouchableOpacity, Image, ImageBackground } from 'react-native';
+import { withNavigation } from "react-navigation";
 
 const { width: winWidth, height: winHeight } = Dimensions.get('window');
 import { Icon } from 'react-native-elements'
@@ -41,7 +42,7 @@ handleSelectChoice = () => {
    
     <View style={{marginLeft:winWidth*0.01, marginBottom:winWidth*0.01}}>
         <View>
-        <TouchableOpacity onPress={this.handleSelectChoice} onLongPress={this.handlePress} onPressOut={this.handlePressOut} >
+        <TouchableOpacity onPress={()=> this.props.navigation.navigate("GalleryView", {imageIndex:this.props.i, num:this.props.faceImagesList.length})} onLongPress={this.handlePress} onPressOut={this.handlePressOut} >
         <ImageBackground source={{uri:this.props.image}} blurRadius={this.props.blurValue} style={{ height:winWidth*0.3, width:winWidth*0.32}}/>
         </TouchableOpacity>
         <View style={{width:winWidth*0.32,height:30, backgroundColor:"black",opacity:0.4, position:"absolute", bottom:0}}></View>
@@ -89,6 +90,8 @@ const mapDispatchToProps  = dispatch => {
     };
   };
 
-  export default connect(
+  export default withNavigation( connect(
     mapStateToProps, mapDispatchToProps
-  )(FaceImageGrid);
+  )(FaceImageGrid));
+
+

@@ -83,7 +83,7 @@ position = new Animated.ValueXY()
      this.Users.map( user=>  { 
       Image.getSize( user.link, ( width, height ) =>
       {
-         const ratio = height/ width 
+         const ratio = height/width 
           console.log("FOUND!!!!!!!!!",width,height)
           console.log("FOUND!!!!!!!!!",width/height)
           const joined = this.state.images_dimensions.concat(ratio);
