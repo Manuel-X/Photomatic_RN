@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Dimensions, ScrollView, Text, ImageBackground, Platform, Vibration} from 'react-native';
+import { View, Dimensions, ScrollView, Text, ImageBackground, Platform } from 'react-native';
 import { Permissions, MediaLibrary, FileSystem } from 'expo';
 
 
@@ -19,8 +19,6 @@ import { connect } from "react-redux";
 
 import styles from './styles';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-
-import LargeImage from './LargeImage'
 
 
  class ImagesList extends React.Component {

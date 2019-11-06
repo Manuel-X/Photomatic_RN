@@ -4,7 +4,8 @@ import FaceDetection from "../Components/FaceDetection";
 import Gallery from "../Components/FaceDetection/Gallery"
 import EventEntry from "../Components/EventEntry";
 import ImagesList from "../Components/ImagesList";
-import ListView from "../Components/ImagesList/ListView"
+import ListView from "../Components/ImagesList/ListView";
+import DeckView from '../Components/ImagesList/DeckView'
 
 
 const StackNav = createStackNavigator(
@@ -13,7 +14,8 @@ const StackNav = createStackNavigator(
     Gallery:Gallery,
     EventEntry: EventEntry,
     ImagesList: ImagesList,
-    ListView: ListView
+    ListView: ListView,
+    DeckView: DeckView
 
   },
   {

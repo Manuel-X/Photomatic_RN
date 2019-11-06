@@ -199,4 +199,3 @@ export default class CameraPage extends React.Component {
       }
     
 };
-
