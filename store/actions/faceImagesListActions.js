@@ -38,8 +38,21 @@ export const getFaceImagesList = (faceImgBase64, eventID) => {
     }
   };
 
+  export const selectImageDeck = (index) => {
+    return{
+    type: actionTypes.SELECT_IMAGE_DECK,
+    index:index
+    }
+  };
+
   export const deselectImage = (index) => ({
     type: actionTypes.DESELECT_IMAGE,
+    index:index
+  });
+
+  
+  export const deselectImageDeck = (index) => ({
+    type: actionTypes.DESELECT_IMAGE_DECK,
     index:index
   });
 

@@ -15,17 +15,21 @@ import * as actionCreators from '../../store/actions'
  class App extends React.Component {
 
 
-  Users = this.props.faceImagesList
+  Users = this.props.unselectedImages
   
 
   static navigationOptions = {
     header:null
   };
 
+  initialCount=0;
+  mappingList= 0;
+
+  
 componentDidUpdate(){
-  if(this.state.currentIndex === this.props.faceImagesList.length) {
+  if(this.state.currentIndex === this.initialCount) {
     console.log("HELLO",this.state.currentIndex)
-    this.props.navigation.navigate("ImagesList")
+    this.props.navigation.replace("ImagesList")
     setTimeout(()=>{ 
       this.setState({currentIndex:0})
      },500);
@@ -75,11 +79,22 @@ position = new Animated.ValueXY()
       inputRange: [-SCREEN_WIDTH / 2, 0, SCREEN_WIDTH / 2],
       outputRange: [1, 0.8, 1],
       extrapolate: 'clamp'
-    })
+    }) 
 
+    componentDidMount(){
+ 
+    }
   
-
+    
    componentWillMount() {
+    this.mappingList = this.props.unselectedImages.map(img =>{
+      return(
+      img.id
+      )
+    })
+    console.log("MAPPING!!!!!!!!!!!!!",this.mappingList)
+     this.initialCount= this.props.unselectedImages.length
+
      this.Users.map( user=>  { 
       Image.getSize( user.link, ( width, height ) =>
       {
@@ -99,6 +114,8 @@ position = new Animated.ValueXY()
           console.log( error );
       });
     })
+
+
     
     if(this.state.loading) () => {
         return(
@@ -120,7 +137,7 @@ position = new Animated.ValueXY()
       onPanResponderRelease: (evt, gestureState) => {
 
         if (gestureState.dx > 120) {
-          this.props.deselectImage(this.state.currentIndex)
+          this.props.selectImage(this.mappingList[this.state.currentIndex])
           Animated.spring(this.position, {
             toValue: { x: SCREEN_WIDTH + 100, y: gestureState.dy }
           }).start(() => {
@@ -130,7 +147,7 @@ position = new Animated.ValueXY()
           })
         }
         else if (gestureState.dx < -120) {
-          this.props.selectImage(this.state.currentIndex)
+          this.props.deselectImage(this.mappingList[this.state.currentIndex])
           Animated.spring(this.position, {
             toValue: { x: -SCREEN_WIDTH - 100, y: gestureState.dy }
           }).start(() => {
@@ -168,12 +185,12 @@ position = new Animated.ValueXY()
             key={item.id} style={[this.rotateAndTranslate, { height: SCREEN_HEIGHT-120, width: SCREEN_WIDTH, padding: 10, position: 'absolute', justifyContent:"center", alignItems:"center" }]}>
           
             <Animated.View style={{ opacity: this.likeOpacity, transform: [{ rotate: '-30deg' }], position: 'absolute', top: SCREEN_HEIGHT/2.5, left: 40, zIndex: 1000 }}>
-              <Text style={{ backgroundColor:"white",borderWidth: 1, borderColor: 'red', color: 'red', fontSize: 32, fontWeight: '800', padding: 10 }}>SKIP</Text>
+              <Text style={{ backgroundColor:"white",borderWidth: 1, borderColor: 'blue', color: 'blue', fontSize: 32, fontWeight: '800', padding: 10 }}>CHOOSE</Text>
 
             </Animated.View>
 
             <Animated.View style={{ opacity: this.dislikeOpacity, transform: [{ rotate: '30deg' }], position: 'absolute', top: SCREEN_HEIGHT/2.5, right: 40, zIndex: 1000 }}>
-              <Text style={{ backgroundColor:"white",borderWidth: 1, borderColor: 'blue', color: 'blue', fontSize: 32, fontWeight: '800', padding: 10 }}>CHOOSE</Text>
+              <Text style={{ backgroundColor:"white",borderWidth: 1, borderColor: 'red', color: 'red', fontSize: 32, fontWeight: '800', padding: 10 }}>SKIP</Text>
 
             </Animated.View>
 
@@ -199,12 +216,12 @@ position = new Animated.ValueXY()
             }]}>
            
             <Animated.View style={{ opacity: 0, transform: [{ rotate: '-30deg' }], position: 'absolute', top: SCREEN_HEIGHT/2.5, left: 40, zIndex: 1000 }}>
-            <Text style={{ backgroundColor:"white",borderWidth: 1, borderColor: 'red', color: 'red', fontSize: 32, fontWeight: '800', padding: 10 }}>SKIP</Text>
+            <Text style={{ backgroundColor:"white",borderWidth: 1, borderColor: 'blue', color: 'blue', fontSize: 32, fontWeight: '800', padding: 10 }}>CHOOSE</Text>
 
             </Animated.View>
 
             <Animated.View style={{ opacity: 0, transform: [{ rotate: '30deg' }], position: 'absolute', top: SCREEN_HEIGHT/2.5, right: 40, zIndex: 1000 }}>
-            <Text style={{ backgroundColor:"white",borderWidth: 1, borderColor: 'blue', color: 'blue', fontSize: 32, fontWeight: '800', padding: 10 }}>CHOOSE</Text>
+            <Text style={{ backgroundColor:"white",borderWidth: 1, borderColor: 'red', color: 'red', fontSize: 32, fontWeight: '800', padding: 10 }}>SKIP</Text>
 
             </Animated.View>
             { this.state.images_dimensions.length > i?
@@ -228,7 +245,7 @@ position = new Animated.ValueXY()
         </View>
         <View style={{ height: 60, width:100}}>
    
-        <TouchableWithoutFeedback onPress={() => this.props.navigation.navigate("ImagesList")}>
+        <TouchableWithoutFeedback onPress={() => this.props.navigation.replace("ImagesList")}>
         <View style={{paddingTop:20, bottom:20, opacity:0.9}}>
         <Text style={{borderBottomRightRadius:10, borderTopRightRadius:10, backgroundColor:"blue", color:"white", paddingTop:10, paddingBottom:10}}> View All Photos</Text>
         </View>
@@ -245,15 +262,15 @@ position = new Animated.ValueXY()
 
 const mapStateToProps  = state => {
   return {
-    faceImagesList: state.faceImagesListReducer.faceImagesList ,
+    unselectedImages: state.faceImagesListReducer.unselectedImages ,
   };
 };
 
 const mapDispatchToProps  = dispatch => {
   return {
     //Real parameters names
-    selectImage: index => dispatch(actionCreators.selectImage(index)),
-    deselectImage: index => dispatch(actionCreators.deselectImage(index)),
+    selectImage: index => dispatch(actionCreators.selectImageDeck(index)),
+    deselectImage: index => dispatch(actionCreators.deselectImageDeck(index)),
   };
 };
 

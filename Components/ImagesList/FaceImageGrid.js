@@ -23,11 +23,26 @@ import LargeImage from './LargeImage'
 
 
   handlePress = () => {
-    this.setState({modalVisible:true})   
+    if(this.props.selectedImages.length)
+    this.setState({modalVisible:true}) 
+    else  
+    this.props.selectImage(this.props.i)
+}
+
+
+handleShortPress = () => {
+  if(this.props.selectedImages.length){
+    if(this.props.faceImagesList[this.props.i].selected)
+  this.props.deselectImage(this.props.i)
+    else
+  this.props.selectImage(this.props.i)
+  }else{
+ this.props.navigation.navigate("GalleryView", {imageIndex:this.props.i, num:this.props.faceImagesList.length})
+  }
 }
 
 handlePressOut = () => {
-  this.setState({modalVisible:false})   
+  this.setState({modalVisible:false})    
 }
 
 handleSelectChoice = () => {
@@ -42,28 +57,16 @@ handleSelectChoice = () => {
    
     <View style={{marginLeft:winWidth*0.01, marginBottom:winWidth*0.01}}>
         <View>
-        <TouchableOpacity onPress={()=> this.props.navigation.navigate("GalleryView", {imageIndex:this.props.i, num:this.props.faceImagesList.length})} onLongPress={this.handlePress} onPressOut={this.handlePressOut} >
+        <TouchableOpacity onPress={this.handleShortPress} onLongPress={this.handlePress} onPressOut={this.handlePressOut} >
         <ImageBackground source={{uri:this.props.image}} blurRadius={this.props.blurValue} style={{ height:winWidth*0.3, width:winWidth*0.32}}/>
         </TouchableOpacity>
-        <View style={{width:winWidth*0.32,height:30, backgroundColor:"black",opacity:0.4, position:"absolute", bottom:0}}></View>
+
         <View style={styles.selectionButton}>
             {this.props.faceImagesList[this.props.i].selected?
             <TouchableOpacity onPress={()=> this.props.deselectImage(this.props.i)}>
-            <Icon
-                size = {30}
-                name='check-circle'
-                type='antidesign' 
-                color="blue"     
-            />
-            </TouchableOpacity>:
-            <TouchableOpacity onPress={()=> this.props.selectImage(this.props.i)}>
-            <Icon
-                size = {37.5}
-                name='check'
-                type='evilicon' 
-                color="white" 
-            />
-            </TouchableOpacity>
+
+            <ImageBackground source={require('./assets/check.png')} style={{height:winHeight*0.028, width:winHeight*0.028, marginRight:5, marginBottom:5}}></ImageBackground>
+            </TouchableOpacity>:null
             }
             
         </View>
@@ -78,7 +81,8 @@ handleSelectChoice = () => {
 const mapStateToProps  = state => {
     return {
       faceImagesList: state.faceImagesListReducer.faceImagesList ,
-      blurValue: state.faceImagesListReducer.blurValue 
+      blurValue: state.faceImagesListReducer.blurValue,
+      selectedImages: state.faceImagesListReducer.selectedImages,
     };
   };
 

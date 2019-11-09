@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Dimensions, ImageBackground } from 'react-native';
+import { View, Text, Dimensions, ImageBackground, Animated, Easing} from 'react-native';
 import {Button} from 'native-base'
 import { Camera } from 'expo-camera';
 import { Permissions, FaceDetector, DangerZone } from 'expo';
@@ -13,6 +13,10 @@ import styles from './styles';
 const { width: winWidth, height: winHeight } = Dimensions.get('window');
 
 export default class CameraPage extends React.Component {
+
+  static navigationOptions = {
+    header:null
+  };
     camera = null;
 
     static defaultProps = {
@@ -35,6 +39,8 @@ export default class CameraPage extends React.Component {
         pictureTaken: false, //true when photo has been taken
         motion: null, //captures the device motion object 
         detectMotion: false, //when true we attempt to determine if device is still
+        progress: new Animated.Value(0),
+        progress2: new Animated.Value(0),
       };
 
 
@@ -54,12 +60,44 @@ export default class CameraPage extends React.Component {
       }
     
       componentDidMount(){
+
+        this.startAnimation()
+        this.startAnimation2()
+        
         this.motionListener = DangerZone.DeviceMotion.addListener(this.onDeviceMotion);
         setTimeout(()=>{ //MH - tempm - wait 5 seconds for now before detecting motion
           this.detectMotion(true);
          
         },100);
   
+      }
+
+      startAnimation () {
+        this.state.progress.setValue(0)
+        Animated.timing(
+          this.state.progress,
+          {
+            toValue: 1,
+            duration: 3000,
+            easing: Easing.linear
+          }
+        ).start(() => {
+          this.startAnimation()
+        })
+      }
+
+      startAnimation2 () {
+        this.state.progress2.setValue(0)
+        Animated.timing(
+          this.state.progress2,
+          {
+            toValue: 1,
+            duration: 2000,
+            easing: Easing.linear
+          }
+        ).start(() => {
+          this.startAnimation2()
+        })
       }
 
       componentWillUpdate(nextProps, nextState) {
@@ -85,6 +123,7 @@ export default class CameraPage extends React.Component {
       faceDetecting: doDetect,
     });
   }
+  
 
   detectMotion =(doDetect)=> {
     this.setState({
@@ -130,13 +169,14 @@ export default class CameraPage extends React.Component {
                     />
                 </View>
         
-                <View style={{ left:0.05*winWidth, top:winHeight*0.1}}>
+                <View >
                   {this.state.faceDetected?
-                    <LottieView source={require('./assets/shutterloading.json')} autoPlay loop style={{height:winHeight*0.5,  width:winHeight*0.5, right:50 }}/>
-                  :<ImageBackground source={{uri:"https://img.pngio.com/red-dotted-circle-clip-art-at-clkercom-vector-clip-art-online-dotted-circle-png-600_600.png"}} style={{width: winWidth*0.9, height: winWidth*0.9}}>
-                </ImageBackground>}
-                <Text style={{left:winWidth/4, color:"white", fontWeight:"500", fontSize:20}}>{this.state.faceDetected ?  null: 'PLACE YOUR FACE HERE'}</Text>
-
+                    <LottieView progress={this.state.progress} source={require('./assets/scanDone.json')}   height={winHeight} width={winWidth} />
+                  : <LottieView  progress={this.state.progress2} source={require('./assets/scanFailed.json')}  loop height={winHeight} width={winWidth}/>
+                }
+                <View style={{width:winWidth, justifyContent:"center", alignItems:"center", top:winHeight/2}}>
+                <Text style={{color:"white", fontWeight:"500", fontSize:20}}>{this.state.faceDetected ?  null: 'SHOW ME YOUR FACE!'}</Text>
+                </View>
                 </View>
          
                         

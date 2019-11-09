@@ -2,6 +2,8 @@ import React from 'react';
 import { View, Dimensions, ScrollView, Text, ImageBackground, Platform, Vibration} from 'react-native';
 import { Permissions, MediaLibrary, FileSystem } from 'expo';
 
+import LottieView from "lottie-react-native";
+
 
 import LoadingDownload from './LoadingDownload'
 
@@ -97,7 +99,7 @@ import LargeImage from './LargeImage'
     };
 
     return {
-      title: "Photos you are featured in",
+      title: "Your Photos",
     };
   };
 
@@ -106,55 +108,57 @@ import LargeImage from './LargeImage'
    ))
      render (){
         return(
-          
-            <View style={{marginBottom:50}} >
-             
-            <View style={{color:"white", width:winWidth,backgroundColor:"#90d4ed", height:winHeight/13, position:"absolute", top:0}}></View>
-      <View style={{flexDirection:"row"}}>
-              <GradientButton
-      style={{ marginVertical: 2, fontWeight:"300" }}
-      text="Select"
-          
-      gradientBegin="#2c9948"
-      gradientEnd="#2a2f91"
-      gradientDirection="diagonal"
-      height={winHeight/15}
-      width={winWidth*0.20}
-      radius={15}
-      onPressAction={() => this.props.selectAllImages()}
-    />
-    <GradientButton
-      style={{ marginVertical: 2 }}
-      gradientBegin="#d6111e"
-      gradientEnd="#c227b5"
-      gradientDirection="diagonal"
-      height={winHeight/15}
-      width={winWidth*0.26}
-      radius={15}
-      onPressAction={() => this.props.deSelectAllImages()}
-     >
-     Deselect
-
-     </GradientButton>
-     <GradientButton
-      style={{ marginVertical: 2 }}
-           
-      gradientBegin={this.props.selectedImages.length?"green":"grey"}
-      gradientEnd={this.props.selectedImages.length?"black":"lightgrey"}
-      gradientDirection="diagonal"
-      height={winHeight/15}
-      width={winWidth*0.30}
-      radius={15}
-      onPressAction={this.handleDownload}
-     >
-     Download
-     </GradientButton>
-     <TouchableOpacity onPress={()=>this.props.navigation.replace("ListView")}>
-     <ImageBackground source={{uri:"https://static.thenounproject.com/png/690222-200.png"}} style={{height:winHeight/15, width:winWidth/10}}></ImageBackground>
-     </TouchableOpacity>
+ 
+    <View style={{marginBottom:50,}} >
+     <View style={{flexDirection:"row"}}>
+     <View style={{ borderColor:"white", borderWidth:0.3, flexDirection:"row", width:winWidth/2, alignItems:"center", justifyContent:"center"}}>
+     {this.props.selectedImages.length == this.props.faceImagesList.length?
+      <ImageBackground source={require('./assets/deactive-carousel.png')} style={{height:winHeight*0.03, width:winHeight*0.034, top:5, marginBottom:10}}></ImageBackground>:
+      <TouchableOpacity onPress={()=>this.props.navigation.navigate("DeckView")}>
+      <ImageBackground source={require('./assets/carousel.png')} style={{height:winHeight*0.03, width:winHeight*0.034, top:5, marginBottom:10}}></ImageBackground>
+      </TouchableOpacity>
+      }
+    
     </View>
-    <Text style={{textAlign:"center",color:"white",fontWeight:"500",fontSize:20, width:winWidth,backgroundColor:"#90d4ed", height:winHeight/24}}> {this.props.selectedImages.length}/{this.props.faceImagesList.length} selected </Text>
+{this.props.selectedImages.length?
+  <View style={{ borderColor:"white", borderWidth:0.3, flexDirection:"row", width:winWidth/2, alignItems:"center", justifyContent:"center"}}>
+  <TouchableOpacity onPress={this.handleDownload}>
+  <ImageBackground source={require('./assets/download.png')} style={{height:winHeight*0.03, width:winHeight*0.045, top:5, marginBottom:10}}></ImageBackground>
+  </TouchableOpacity>
+</View>:
+<View style={{ borderColor:"white", borderWidth:0.3, flexDirection:"row", width:winWidth/2, alignItems:"center", justifyContent:"center"}}>
+  <ImageBackground source={require('./assets/deactive-download.png')} style={{height:winHeight*0.03, width:winHeight*0.045, top:5, marginBottom:10}}></ImageBackground>
+</View>
+}
 
+     </View>
+
+  
+     {/* <TouchableOpacity onPress={()=>this.props.navigation.replace("DeckView")}>
+     <ImageBackground source={{uri:"https://static.thenounproject.com/png/690222-200.png"}} style={{height:winHeight/15, width:winWidth/10}}></ImageBackground>
+     </TouchableOpacity> */}
+    
+    {this.props.selectedImages.length? 
+    <View style={{flexDirection:"row",marginBottom:10 ,marginTop:10}}>
+
+    <View style={{ borderColor:"white", borderWidth:0.3, flexDirection:"row", width:winWidth/3, alignItems:"center", justifyContent:"center"}}>
+      <Text style={{fontWeight:"700", fontSize:12, textAlignVertical:"center", marginRight:10}}> {this.props.selectedImages.length}/{this.props.faceImagesList.length} SELECTED</Text>
+     </View>
+   
+   <TouchableOpacity onPress={()=> this.props.selectAllImages()}>
+    <View style={{ borderColor:"white", borderWidth:0.3, flexDirection:"row", width:winWidth/3, alignItems:"center", justifyContent:"center"}}>
+      <Text style={{fontWeight:"700", fontSize:12, textAlignVertical:"center", marginRight:10}}>SELECT ALL</Text>
+     </View>
+  </TouchableOpacity>
+  <TouchableOpacity onPress={()=> this.props.deSelectAllImages()}>
+     <View style={{ borderColor:"white", borderWidth:0.3, flexDirection:"row", width:winWidth/3, alignItems:"center", justifyContent:"center"}}>
+      <Text style={{fontWeight:"700", fontSize:12, textAlignVertical:"center", marginRight:10}}>DESELECT ALL</Text>
+     </View>
+  </TouchableOpacity>
+     </View>
+     :null}
+   
+ 
   
 
                 {this.props.loading?<Image source={{ uri:"https://i.ibb.co/nPPqsyF/ezgif-com-gif-maker-1.gif" }} style={styles.galleryImage} />:
