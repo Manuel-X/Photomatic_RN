@@ -8,7 +8,7 @@ export const getEventDetail = (eventID) => {
       try {
         const res = await axios.get(`http://48a724e4.ngrok.io/api/packages/${eventID}/`);
         const event = res.data;
-        console.log("EVENT DETAIL!!!!!!!!!!!!!!!!",event)
+      
         dispatch({
           type: actionTypes.GET_EVENTDETAIL,
           payload: event

@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Dimensions, ScrollView, Text, ImageBackground, Platform, Vibration} from 'react-native';
+import { View, Dimensions, ScrollView, Text, ImageBackground, Platform, Vibration, Image} from 'react-native';
 import { Permissions, MediaLibrary, FileSystem } from 'expo';
 
 import LottieView from "lottie-react-native";
@@ -9,7 +9,7 @@ import LoadingDownload from './LoadingDownload'
 
 import GradientButton from 'react-native-gradient-buttons'
 
-import Image from 'react-native-scalable-image';
+//import Image from 'react-native-scalable-image';
 
 import FaceImageGrid from "./FaceImageGrid"
  
@@ -33,6 +33,7 @@ import LargeImage from './LargeImage'
 
   componentDidMount() {
     this.getCameraRollPermissions();
+    console.log("RECEIVED IMAGES", this.props.faceImagesList)
   }
 
 
@@ -58,7 +59,7 @@ import LargeImage from './LargeImage'
 
   async saveImageToDevice(image){
     this.saveToCache(image)
-    const asset = await MediaLibrary.createAssetAsync(`${FileSystem.cacheDirectory + image.title}.jpg`);
+    const asset = await MediaLibrary.createAssetAsync(`${FileSystem.cacheDirectory + image.title}.jpeg`);
     if(Platform.OS === 'android')
     MediaLibrary.createAlbumAsync('Photomatic', asset)
   };
@@ -70,7 +71,7 @@ import LargeImage from './LargeImage'
       this.setState({modalVisible:false}) 
      },1800);
 
-    console.log("IMAGES!!!!!!!!!!!!!!!",images)
+ 
     images.forEach(image=>{
         this.saveImageToDevice(image)
     })
@@ -102,13 +103,16 @@ import LargeImage from './LargeImage'
       title: "Your Photos",
     };
   };
-
   imagesList = this.props.faceImagesList.map( (img,index) => (   
-    <FaceImageGrid ref={this.FaceImageElement} image={img.link} i={index}/>
+    <FaceImageGrid image={img.link} i={index}/>
    ))
      render (){
+      if(!this.props.faceImagesList.length){
+      return (
+        <Image source={require('./assets/facescan.gif')} style={{height:winHeight, width:winWidth}} />
+      )
+      }else{
         return(
- 
     <View style={{marginBottom:50,}} >
      <View style={{flexDirection:"row"}}>
      <View style={{ borderColor:"white", borderWidth:0.3, flexDirection:"row", width:winWidth/2, alignItems:"center", justifyContent:"center"}}>
@@ -156,24 +160,22 @@ import LargeImage from './LargeImage'
      </View>
   </TouchableOpacity>
      </View>
-     :null}
-   
- 
-  
-
-                {this.props.loading?<Image source={{ uri:"https://i.ibb.co/nPPqsyF/ezgif-com-gif-maker-1.gif" }} style={styles.galleryImage} />:
+     :null}       
                     <ScrollView>
                       <View style={{flex:1,flexDirection:"row", flexWrap:'wrap'}}>
-                      {this.imagesList}
+                      {this.props.faceImagesList.map( (img,index) => (   
+    <FaceImageGrid image={img.link} i={index}/>
+   ))}
                       </View>
                     </ScrollView>
-                }
+                
                 
                 <View style={{width:winWidth,height:40, backgroundColor:"white"}}></View>
                 <LoadingDownload modalVisible={this.state.modalVisible}/>
             </View>
         
         )
+    }
      }
  }
 

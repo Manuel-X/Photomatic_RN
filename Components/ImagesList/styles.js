@@ -60,7 +60,7 @@ export default StyleSheet.create({
     },
     galleryImage: { 
         width: winWidth,
-        height: winHeight ,
-
+        height: winHeight,
+        resizeMode:"contain"
     }
 });

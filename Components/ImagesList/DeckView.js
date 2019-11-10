@@ -28,7 +28,7 @@ import * as actionCreators from '../../store/actions'
   
 componentDidUpdate(){
   if(this.state.currentIndex === this.initialCount) {
-    console.log("HELLO",this.state.currentIndex)
+   
     this.props.navigation.replace("ImagesList")
     setTimeout(()=>{ 
       this.setState({currentIndex:0})
@@ -92,22 +92,20 @@ position = new Animated.ValueXY()
       img.id
       )
     })
-    console.log("MAPPING!!!!!!!!!!!!!",this.mappingList)
+  
      this.initialCount= this.props.unselectedImages.length
 
      this.Users.map( user=>  { 
       Image.getSize( user.link, ( width, height ) =>
       {
          const ratio = height/width 
-          console.log("FOUND!!!!!!!!!",width,height)
-          console.log("FOUND!!!!!!!!!",width/height)
+ 
           const joined = this.state.images_dimensions.concat(ratio);
           
         this.setState({
           images_dimensions:joined
         })
-        console.log("JJJ",joined )
-          console.log("ARRAY",this.state.images_dimensions)
+
       }, ( error ) =>
       {
           this.setState({ loading: false });
@@ -194,7 +192,7 @@ position = new Animated.ValueXY()
 
             </Animated.View>
 
-            {console.log("iiiiiiiiiiiiiiiii",i)}
+            
             { this.state.images_dimensions.length> i?
             <Image source={{uri: item.link}} style={{width:SCREEN_WIDTH*0.95, height:SCREEN_WIDTH*0.95*this.state.images_dimensions[i], borderRadius:20 }}   />
             :null}
@@ -246,11 +244,13 @@ position = new Animated.ValueXY()
         <View style={{ height: 60, width:100}}>
    
         <TouchableWithoutFeedback onPress={() => this.props.navigation.replace("ImagesList")}>
-        <View style={{paddingTop:20, bottom:20, opacity:0.9}}>
-        <Text style={{borderBottomRightRadius:10, borderTopRightRadius:10, backgroundColor:"blue", color:"white", paddingTop:10, paddingBottom:10}}> View All Photos</Text>
+          <View style={{width:SCREEN_WIDTH, justifyContent:"center", alignItems:"center"}}>
+          <View style={{padding:20, borderColor:"blue", borderRadius:10, borderWidth:1, width:SCREEN_WIDTH*0.5, justifyContent:"center", alignContent:"center", bottom:10, }}>
+        <Text  style={{color:"blue", fontWeight:"600", fontSize:16, textAlign:"center"}}> SEE ALL PHOTOS</Text>
+        </View>
         </View>
         </TouchableWithoutFeedback>
-
+        
         </View>
 
 

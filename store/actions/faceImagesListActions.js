@@ -3,23 +3,33 @@ import axios from "axios";
 import * as actionTypes from "./types";
 
 
-export const getFaceImagesList = (faceImgBase64, eventID) => {
+export const getFaceImagesList = (event_id,faceImgBase64) => {
     console.log("Sent image and waiting for list!!!!")
     return async dispatch => {
       dispatch(setFaceDetectingLoading());
       try {
-        const res = await axios.post(`http://48a724e4.ngrok.io/api/faceImagesList/${eventID}`, faceImgBase64);
+        const res = await axios.post(`http://36a3c9d4.ngrok.io/api/user/${event_id}/`, {base64:faceImgBase64});
         const faceImagesList = res.data;
-        console.log("FACE IMAGES LIST!!!!!!!!!:",faceImagesList)
+        const pictures = faceImagesList.map((img, index) => {
+          return(
+          {link:`http://36a3c9d4.ngrok.io/media/${img.fields.photo}`, selected:false, title:`${index}`, id:`${index}`}
+          )
+        })
+        console.log("LIST!!!!!!!!!!!!!",pictures)
         dispatch({
           type: actionTypes.SEND_FACE_GET_IMAGES,
-          payload: faceImagesList
+          payload: pictures
         });
       } catch (err) {
         console.error("Error while getting face images list", err);
       }
     };
   };
+
+  export const resetValues = () => ({
+    type: actionTypes.RESET_VALUES,
+  
+  });
 
   export const selectAllImages = () => ({
     type: actionTypes.SELECTALL_IMAGES,

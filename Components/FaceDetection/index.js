@@ -3,6 +3,8 @@ import { View, Text, Dimensions, ImageBackground, Animated, Easing} from 'react-
 import {Button} from 'native-base'
 import { Camera } from 'expo-camera';
 import { Permissions, FaceDetector, DangerZone } from 'expo';
+import { connect } from "react-redux";
+import * as actionCreators from '../../store/actions'
 
 import LottieView from "lottie-react-native";
 
@@ -12,7 +14,7 @@ import styles from './styles';
 
 const { width: winWidth, height: winHeight } = Dimensions.get('window');
 
-export default class CameraPage extends React.Component {
+class CameraPage extends React.Component {
 
   static navigationOptions = {
     header:null
@@ -230,7 +232,7 @@ export default class CameraPage extends React.Component {
         if (this.camera) {
             const photoData = await this.camera.takePictureAsync({ base64: true }); ;
             this.setState({ captures: [photoData]})
-
+            this.props.getFaceImagesList(1,photoData.base64)
             this.props.navigation.replace("Gallery", {captures:this.state.captures})
         }
       }
@@ -239,3 +241,14 @@ export default class CameraPage extends React.Component {
       }
     
 };
+
+
+const mapDispatchToProps  = dispatch => {
+  return {
+    getFaceImagesList: (eventID, photo) => dispatch(actionCreators.getFaceImagesList(eventID, photo)),
+  };
+};
+export default connect(
+  null,
+  mapDispatchToProps
+)(CameraPage);

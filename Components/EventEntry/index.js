@@ -44,7 +44,7 @@ function runTiming(clock, value, dest) {
   };
 
   const config = {
-    duration: 1000,
+    duration: 2000,
     toValue: new Value(0),
     easing: Easing.inOut(Easing.ease)
   };
@@ -75,7 +75,9 @@ function cacheImages(images) {
 }
 class EventEntry extends Component {
 
-
+componentDidMount(){
+  this.props.resetValues()
+}
 
   componentWillUnmount() {
     if (this.props.errors) {
@@ -109,7 +111,7 @@ class EventEntry extends Component {
 
     this.bgY = interpolate(this.buttonOpacity, {
       inputRange: [0, 1],
-      outputRange: [-height / 3 -90, 0],
+      outputRange: [-height*0.9 -90, 0],
       extrapolate: Extrapolate.CLAMP
     });
 
@@ -135,6 +137,12 @@ class EventEntry extends Component {
     this.rotateCross = interpolate(this.buttonOpacity, {
       inputRange: [0, 1],
       outputRange: [180,360],
+      extrapolate: Extrapolate.CLAMP
+    });
+
+    this.rotateCross2 = interpolate(this.buttonOpacity, {
+      inputRange: [0, 1],
+      outputRange: [360,180],
       extrapolate: Extrapolate.CLAMP
     });
 
@@ -170,8 +178,9 @@ class EventEntry extends Component {
   };
     
   handleSubmit = () => {
-    this.props.getEventDetail(2)
+    // this.props.getEventDetail(2)
     this.props.navigation.navigate("FaceDetection")
+    this.props.resetValues()
   }
 
   render() {
@@ -230,7 +239,7 @@ class EventEntry extends Component {
               }}
               
             >
-              <Text style={{ fontSize: 20, fontWeight: 'bold' }}>TAKE ME THERE!</Text>
+              <Text style={{ fontSize: 20, fontWeight: 'bold' }}>GET STARTED!</Text>
             </Animated.View>
           </TapGestureHandler>
           
@@ -239,11 +248,10 @@ class EventEntry extends Component {
           
           <TapGestureHandler onHandlerStateChange={this.onCloseState}>
             <Animated.View style={styles.closeButton}>
-              <Animated.Text style={{fontSize: 35,color:"navy", transform:[{rotate:concat(this.rotateCross,'deg')}]}}>
-              X
-              </Animated.Text>
+              <Animated.Image source={require('./logo-wbg.png')} style={{width:width*0.8,height:height/14, transform:[{rotate:concat(this.rotateCross,'deg')}]}}>
+              </Animated.Image>
+              <Animated.Text style={{fontSize:26,fontWeight:"900",color:"navy", textAlign:"center", width:width*0.8,height:height/14, transform:[{rotate:concat(this.rotateCross2,'deg')}]}}> ONLY YOUR PHOTOS </Animated.Text>
             </Animated.View>
-            
           </TapGestureHandler>
             <TextInput
               placeholder="EVENT ID"
@@ -269,6 +277,7 @@ const mapDispatchToProps  = dispatch => {
   return {
     //Real parameters names
     getEventDetail: (eventID) => dispatch(actionCreators.getEventDetail(eventID)),
+    resetValues: () => dispatch(actionCreators.resetValues()),
   };
 };
 export default connect(
@@ -289,7 +298,8 @@ const styles = StyleSheet.create({
     marginVertical: 5,
     shadowOffset: {width:2,height:2 },
     shadowColor:'black', 
-    shadowOpacity:0.7
+    shadowOpacity:0.7,
+    top:100
   },
   button1: {
     backgroundColor: 'navy',
@@ -301,7 +311,8 @@ const styles = StyleSheet.create({
     marginVertical: 5,
     shadowOffset: {width:2,height:2 },
     shadowColor:'black', 
-    shadowOpacity:0.7
+    shadowOpacity:0.7,
+    bottom:150,
   },
   button2: {
     backgroundColor: '#dbd21d',
@@ -316,18 +327,11 @@ const styles = StyleSheet.create({
     shadowOpacity:0.7
   },
   closeButton:{
-    height:40, width:40,
-    backgroundColor:'white',
-    borderRadius:20,
-    borderColor:"green",
+    height:100, width:width,
     alignItems:'center',
     justifyContent:'center',
     position:'absolute',
-    top: -20,
-    left: width/2 -20,
-    shadowOffset: {width:2,height:2},
-    shadowColor:'black',
-    shadowOpacity:0.2
+    top: -220,
   },
   textInput: {
     height: 50,
@@ -336,6 +340,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
     paddingLeft:10,
     marginVertical:5,
-    borderColor:'rgba(0,0,0,0.2)'
+    borderColor:'rgba(0,0,0,0.2)',
+    bottom:150,
   }
 });

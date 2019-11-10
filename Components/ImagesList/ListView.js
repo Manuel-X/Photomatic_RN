@@ -69,8 +69,6 @@ saveAllPhotos = (images) => {
   setTimeout(()=>{ 
     this.setState({modalVisible:false}) 
    },1800);
-
-  console.log("IMAGES!!!!!!!!!!!!!!!",images)
   images.forEach(image=>{
       this.saveImageToDevice(image)
   })

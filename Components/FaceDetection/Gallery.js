@@ -17,7 +17,7 @@ class Gallery extends React.Component {
     componentDidMount(){
         
         setTimeout(()=>{ 
-           this.props.navigation.replace("DeckView");
+           this.props.navigation.replace("ImagesList");
            this.setState({buttonVisible:true})
           },2000);
         
