@@ -8,11 +8,11 @@ export const getFaceImagesList = (event_id,faceImgBase64) => {
     return async dispatch => {
       dispatch(setFaceDetectingLoading());
       try {
-        const res = await axios.post(`http://36a3c9d4.ngrok.io/api/user/${event_id}/`, {base64:faceImgBase64});
+        const res = await axios.post(`http://3ed03a4c.ngrok.io/api/user/${event_id}/`, {base64:faceImgBase64});
         const faceImagesList = res.data;
         const pictures = faceImagesList.map((img, index) => {
           return(
-          {link:`http://36a3c9d4.ngrok.io/media/${img.fields.photo}`, selected:false, title:`${index}`, id:`${index}`}
+          {link:`http://3ed03a4c.ngrok.io/media/${img.fields.photo}`, selected:false, title:`${index}`, id:`${index}`}
           )
         })
         console.log("LIST!!!!!!!!!!!!!",pictures)

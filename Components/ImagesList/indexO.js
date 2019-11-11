@@ -56,7 +56,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
     this.saveToCache(image)
     const asset = await MediaLibrary.createAssetAsync(`${FileSystem.cacheDirectory + image.title}.jpg`);
     if(Platform.OS === 'android')
-    MediaLibrary.createAlbumAsync('Photomatic', asset)
+    MediaLibrary.createAlbumAsync('Fotomatic', asset)
   };
 
   saveAllPhotos = (images) => {
@@ -75,7 +75,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
       if(!Platform.OS==='ios')
       alert("Photos Saved to your Images")
       else
-      alert("Photos Saved to your Photomatic Album")
+      alert("Photos Saved to your Fotomatic Album")
      },1900);
 
   }

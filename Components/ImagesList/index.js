@@ -72,7 +72,7 @@ import LargeImage from './LargeImage'
     this.saveToCache(image)
     const asset = await MediaLibrary.createAssetAsync(`${FileSystem.cacheDirectory + image.title}.jpeg`);
     if(Platform.OS === 'android')
-    MediaLibrary.createAlbumAsync('Photomatic', asset)
+    MediaLibrary.createAlbumAsync('Fotomatic', asset)
   };
 
   saveAllPhotos = (images) => {
@@ -91,7 +91,7 @@ import LargeImage from './LargeImage'
       if(!Platform.OS==='ios')
       alert("Photos Saved to your Images")
       else
-      alert("Photos Saved to your Photomatic Album")
+      alert("Photos Saved to your Fotomatic Album")
      },1900);
 
   }
@@ -122,8 +122,8 @@ import LargeImage from './LargeImage'
         
         const secondBar = this.scrollYAnimatedValue.interpolate(
               {
-              inputRange: [(winHeight*0.08)+150,(winHeight*0.13)+150],
-              outputRange: [0, winHeight*0.05],
+              inputRange: [(1122*0.08)+350,(1122*0.13)+350],
+              outputRange: [0, 1122*0.05],
               extrapolate:"clamp",
               useNativeDriver: true,
               })
@@ -131,12 +131,22 @@ import LargeImage from './LargeImage'
 
               const iconOpacity = this.scrollYAnimatedValue.interpolate(
                 {
-                inputRange: [(winHeight*0.08)+150,(winHeight*0.13)+150],
+                inputRange: [(1122*0.08)+350,(1122*0.13)+350],
                 outputRange: [0, 1],
                 extrapolate:"clamp",
                 useNativeDriver: true,
                 })
+
+                const secondBarMargin = this.scrollYAnimatedValue.interpolate(
+                  {
+                  inputRange: [(1122*0.08)+150,(1122*0.13)+150],
+                  outputRange: [0, 30],
+                  extrapolate:"clamp",
+                  useNativeDriver: true,
+                  })
               
+
+                
 
     
         
@@ -144,26 +154,22 @@ import LargeImage from './LargeImage'
 
       if(!this.props.faceImagesList.length){
       return (
-        <Image source={require('./assets/facescan.gif')} style={{height:winHeight, width:winWidth}} />
+        <Image source={require('./assets/facescan.gif')} style={{height:1122, width:winWidth}} />
       )
       }else{
         return(
-    <View style={{top:20}}>
-
-      
-   
-     
-     <Animated.View style={{flexDirection:"row", height:secondBar, backgroundColor:"white"}}>
+    <View>
+     <Animated.View style={{flexDirection:"row", height:secondBar, backgroundColor:"white", marginTop:secondBarMargin}}>
 
      {this.props.selectedImages.length? 
-     <View style={{ borderColor:"white", borderWidth:0.3, flexDirection:"row", width:winWidth/4, alignItems:"center", justifyContent:"center"}}>
+     <View style={{ borderColor:"white", borderWidth:0.3, flexDirection:"row", width:winWidth/4, alignItems:"center", justifyContent:"center",}}>
       <TouchableOpacity onPress={()=> this.props.selectAllImages()}>
-      <Animated.Image source={require('./assets/selectall.png')} style={{height:winHeight*0.03, width:winHeight*0.03}}/>
+      <Animated.Image source={require('./assets/selectall.png')} style={{height:1122*0.03, width:1122*0.03,}}/>
       </TouchableOpacity>
     </View>:
     <View style={{ borderColor:"white", borderWidth:0.3, flexDirection:"row", width:winWidth/4, alignItems:"center", justifyContent:"center"}}>
       <TouchableOpacity  onPress={this.goToTop}>
-      <Animated.Image source={require('./assets/logo.png')} style={{height:winHeight*0.03, width:winHeight*0.03}}/>
+      <Animated.Image source={require('./assets/logo.png')} style={{height:1122*0.03, width:1122*0.03}}/>
       </TouchableOpacity>
     </View>
     }
@@ -171,85 +177,119 @@ import LargeImage from './LargeImage'
     {this.props.selectedImages.length? 
     <View style={{ borderColor:"white", borderWidth:0.3, flexDirection:"row", width:winWidth/4, alignItems:"center", justifyContent:"center"}}>
       <TouchableOpacity onPress={()=> this.props.deSelectAllImages()}>
-      <Animated.Image source={require('./assets/unselect.png')} style={{height:winHeight*0.03, width:winHeight*0.03}}/>
+      <Animated.Image source={require('./assets/unselect.png')} style={{height:1122*0.03, width:1122*0.03}}/>
       </TouchableOpacity>
     </View>:
     <View style={{ borderColor:"white", borderWidth:0.3, flexDirection:"row", width:winWidth/4, alignItems:"center", justifyContent:"center"}}>
       <TouchableOpacity onPress={this.goToTop}>
-      <Animated.Image source={require('./assets/logo-text.png')} style={{height:winHeight*0.03, width:winHeight*0.1159282371294}}/>
+      <Animated.Image source={require('./assets/logo-text.png')} style={{height:1122*0.03*0.75, width:1122*0.115928238*0.75}}/>
       </TouchableOpacity>
     </View>
     }
 
      <View style={{ borderColor:"white", borderWidth:0.3, flexDirection:"row", width:winWidth/4, alignItems:"center", justifyContent:"center"}}>
      {this.props.selectedImages.length == this.props.faceImagesList.length?
-      <Animated.Image source={require('./assets/deactive-carousel.png')} style={{height:winHeight*0.03, width:winHeight*0.034}}/>:
+      <Animated.Image source={require('./assets/deactive-carousel.png')} style={{height:1122*0.03, width:1122*0.034,  opacity:iconOpacity}}/>:
       <TouchableOpacity onPress={()=>this.props.navigation.navigate("DeckView")}>
-      <Animated.Image source={require('./assets/carousel.png')} style={{height:winHeight*0.03, width:winHeight*0.034, opacity:iconOpacity}}/>
+      <Animated.Image source={require('./assets/carousel.png')} style={{height:1122*0.03, width:1122*0.034}}/>
       </TouchableOpacity>
       }
     </View>
 {this.props.selectedImages.length?
   <View style={{ borderColor:"white", borderWidth:0.3, flexDirection:"row", width:winWidth/4, alignItems:"center", justifyContent:"center"}}>
   <TouchableOpacity onPress={this.handleDownload}>
-  <Animated.Image source={require('./assets/download.png')} style={{height:winHeight*0.03, width:winHeight*0.045}}/>
+  <Animated.Image source={require('./assets/download.png')} style={{height:1122*0.03, width:1122*0.045}}/>
   </TouchableOpacity>
 </View>:
 <View style={{ borderColor:"white", borderWidth:0.3, flexDirection:"row", width:winWidth/4, alignItems:"center", justifyContent:"center"}}>
-  <Animated.Image source={require('./assets/deactive-download.png')} style={{height:winHeight*0.03, width:winHeight*0.045, opacity:iconOpacity}}/>
+  <Animated.Image source={require('./assets/deactive-download.png')} style={{height:1122*0.03, width:1122*0.045, opacity:iconOpacity}}/>
 </View>
 }
      </Animated.View>
 
                     <ScrollView
+              
                     ref={(c) => {this.scroll = c}}
                     scrollEventThrottle={16}
                     onScroll= {Animated.event(
                     [{ nativeEvent: { contentOffset: { y: this.scrollYAnimatedValue } } }]
                     )}
+                     
                     >
 
-                    
-                    <Animated.View style={{height:150}}>
+                    {console.log("HEIGHT!!!!!!!!!!!!!!!!!!!!",winHeight)}
+                    <ImageBackground source={{uri:"https://catering-kvatric.hr/wp-content/uploads/2017/04/best-party-planner.jpg"}} style={{width:winWidth, height:350}} imageStyle= {{opacity:0.4}}>
+                    <Animated.View style={{height:150, top:30}}>
                     <View style={{flexDirection:"row"}}>
-                    <Image source={{uri:"https://img1.wsimg.com/isteam/ip/a74907d3-f978-4a71-925d-0709e1e5f63c/logo/87657930-5999-41c9-8d55-c201b2f378d2.png/:/rs=h:800/qt=q:95"}} style={{height:winHeight*0.1, width:winHeight*0.1, borderColor:"white", borderRadius:60, borderWidth:1, left:10, top:10}}></Image>
+                      <View>
+                    <Image source={{uri:"https://catering-kvatric.hr/wp-content/uploads/2017/04/best-party-planner.jpg"}} style={{height:112, width:112, borderColor:"white", borderRadius:60, borderWidth:1, left:15, top:10}}></Image>
+                    <View style={{width:112, left:15, top:10}}>
+                    <Text style={{textAlign:"center"}} >Manuel Maged</Text>
+                    </View>
+                    </View>
                    <View style={{left:30,top:20}}>
                    <Text style={{ fontSize:26, color:"navy", fontWeight:"900"}}> EVENT NAME </Text>
-                   <Text style={{ left:5,width:winWidth*0.7,fontSize:22, color:"grey", fontWeight:"300"}}>This is the description of the event. you can write whatever you want here. </Text>
+                   <Text style={{ left:5,width:winWidth-180,fontSize:19, color:"black", fontWeight:"400"}}>This is the description of the event. you can write whatever you want here. </Text>
                    </View>
                   </View>
+
+                  <View style={{width:winWidth, top:40, marginBottom:40}}>
+                      <Text style={{color:"navy",textAlign:"center", fontSize:18, fontWeight:"700"}}>EVENT REF: FG1920194446</Text>
+                    </View>
+
+                  <View style={{top:40, left:16, flexDirection:"row"}}>
+                   
+                    <View style={{width:(winWidth/5)}}>
+                      <Text style={{textAlign:"center", color:"navy", fontSize:18, fontWeight:"700"}}>DATE</Text>
+                      <Text style={{textAlign:"center", color:"black", fontSize:14, fontWeight:"400"}}> 02-02-2019</Text>
+                    </View>
+                    <View style={{width:(winWidth/5)}}>
+                      <Text style={{textAlign:"center", color:"navy", fontSize:18, fontWeight:"700"}}>TIME</Text>
+                      <Text style={{textAlign:"center", color:"black", fontSize:14, fontWeight:"400"}}> 7:45 PM</Text>
+                    </View>
+                    <View style={{width:(winWidth/4)}}>
+                      <Text style={{textAlign:"center", color:"navy", fontSize:18, fontWeight:"700"}}>LOCATION</Text>
+                      <Text style={{textAlign:"center", color:"black", fontSize:14, fontWeight:"400"}}>Free Trade Zone in Shuwaikh</Text>
+                    </View>
+                    <View style={{width:(winWidth/4)}}>
+                      <Text style={{textAlign:"center", color:"navy", fontSize:18, fontWeight:"700"}}>ATTENDEES</Text>
+                      <Text style={{textAlign:"center", color:"black", fontSize:14, fontWeight:"400"}}>300</Text>
+                    </View>
+                  </View>
+
                    </Animated.View>
+                   </ImageBackground>
 
                          
-     <Animated.View style={{flexDirection:"row", height:winHeight*0.05, backgroundColor:"white"}}>
+     <Animated.View style={{flexDirection:"row", height:1122*0.05, backgroundColor:"white",}}>
      <View style={{ borderColor:"white", borderWidth:0.3, flexDirection:"row", width:winWidth/2, alignItems:"center", justifyContent:"center"}}>
      {this.props.selectedImages.length == this.props.faceImagesList.length?
-      <Animated.Image source={require('./assets/deactive-carousel.png')} style={{height:winHeight*0.03, width:winHeight*0.034}}/>:
+      <Animated.Image source={require('./assets/deactive-carousel.png')} style={{height:1122*0.03, width:1122*0.034}}/>:
       <TouchableOpacity onPress={()=>this.props.navigation.navigate("DeckView")}>
-      <Animated.Image source={require('./assets/carousel.png')} style={{height:winHeight*0.03, width:winHeight*0.034}}/>
+      <Animated.Image source={require('./assets/carousel.png')} style={{height:1122*0.03, width:1122*0.034}}/>
       </TouchableOpacity>
       }
     </View>
 {this.props.selectedImages.length?
   <View style={{ borderColor:"white", borderWidth:0.3, flexDirection:"row", width:winWidth/2, alignItems:"center", justifyContent:"center"}}>
   <TouchableOpacity onPress={this.handleDownload}>
-  <Animated.Image source={require('./assets/download.png')} style={{height:winHeight*0.03, width:winHeight*0.045}}/>
+  <Animated.Image source={require('./assets/download.png')} style={{height:1122*0.03, width:1122*0.045}}/>
   </TouchableOpacity>
 </View>:
 <View style={{ borderColor:"white", borderWidth:0.3, flexDirection:"row", width:winWidth/2, alignItems:"center", justifyContent:"center"}}>
-  <Animated.Image source={require('./assets/deactive-download.png')} style={{height:winHeight*0.03, width:winHeight*0.045}}/>
+  <Animated.Image source={require('./assets/deactive-download.png')} style={{height:1122*0.03, width:1122*0.045}}/>
 </View>
 }
      </Animated.View>
 
   
      {/* <TouchableOpacity onPress={()=>this.props.navigation.replace("DeckView")}>
-     <ImageBackground source={{uri:"https://static.thenounproject.com/png/690222-200.png"}} style={{height:winHeight/15, width:winWidth/10}}></ImageBackground>
+     <ImageBackground source={{uri:"https://static.thenounproject.com/png/690222-200.png"}} style={{height:1122/15, width:winWidth/10}}></ImageBackground>
      </TouchableOpacity> */}
     
     
     {this.props.selectedImages.length? 
-    <Animated.View style={{flexDirection:"row", height:winHeight*0.03}}>
+    <Animated.View style={{flexDirection:"row", height:1122*0.03}}>
 
     <TouchableWithoutFeedback>
     <View style={{borderColor:"white", borderWidth:0.3, flexDirection:"row", width:winWidth/3, alignItems:"center", justifyContent:"center"}}>
@@ -270,7 +310,7 @@ import LargeImage from './LargeImage'
      </Animated.View>
      :null}  
 
-                      <View style={{flex:1,flexDirection:"row", flexWrap:'wrap'}}>
+                      <View style={{flex:1,flexDirection:"row", flexWrap:'wrap', marginBottom:100}}>
                       {this.props.faceImagesList.map( (img,index) => (   
     <FaceImageGrid image={img.link} i={index}/>
    ))}

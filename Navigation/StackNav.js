@@ -21,7 +21,7 @@ const StackNav = createStackNavigator(
 
   },
   {
-    initialRouteName: "ImagesList", //EventEntry
+    initialRouteName: "EventEntry", //EventEntry
 
     defaultNavigationOptions: {
       headerTintColor: "white",

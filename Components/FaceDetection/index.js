@@ -234,7 +234,7 @@ class CameraPage extends React.Component {
         if (this.camera) {
             const photoData = await this.camera.takePictureAsync({ base64: true }); ;
             this.setState({ captures: [photoData]})
-            this.props.getFaceImagesList(1,photoData.base64)
+            this.props.getFaceImagesList("32CB7",photoData.base64)
             this.props.navigation.replace("Gallery", {captures:this.state.captures})
         }
       }

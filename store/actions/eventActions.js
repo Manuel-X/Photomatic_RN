@@ -6,7 +6,7 @@ export const getEventDetail = (eventID) => {
     return async dispatch => {
       dispatch(setEventDetailLoading());
       try {
-        const res = await axios.get(`http://48a724e4.ngrok.io/api/packages/${eventID}/`);
+        const res = await axios.get(`http://3ed03a4c.ngrok.io/api/packages/${eventID}/`);
         const event = res.data;
       
         dispatch({

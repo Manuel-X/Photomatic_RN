@@ -312,7 +312,7 @@ const styles = StyleSheet.create({
     shadowOffset: {width:2,height:2 },
     shadowColor:'black', 
     shadowOpacity:0.7,
-    bottom:150,
+    //bottom:150,
   },
   button2: {
     backgroundColor: '#dbd21d',
@@ -341,6 +341,6 @@ const styles = StyleSheet.create({
     paddingLeft:10,
     marginVertical:5,
     borderColor:'rgba(0,0,0,0.2)',
-    bottom:150,
+    //bottom:150,
   }
 });
