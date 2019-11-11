@@ -177,7 +177,9 @@ class CameraPage extends React.Component {
                   : <LottieView  progress={this.state.progress2} source={require('./assets/scanFailed.json')}  loop height={winHeight} width={winWidth}/>
                 }
                 <View style={{width:winWidth, justifyContent:"center", alignItems:"center", top:winHeight/2}}>
-                <Text style={{color:"white", fontWeight:"500", fontSize:20}}>{this.state.faceDetected ?  null: 'SHOW ME YOUR FACE!'}</Text>
+                <Text style={{color:"white", fontWeight:"500", fontSize:24}}>{this.state.faceDetected ?  null: '𝕃𝕆𝕆𝕂 𝔸𝕋 𝕋ℍ𝔼 ℂ𝔸𝕄𝔼ℝ𝔸'}</Text>
+                <Text style={{color:"white", fontWeight:"500", fontSize:24}}>{this.state.faceDetected ?  null: 'ⒶⓃⒹ ⓈⓉⒶⓎ ⓈⓉⒾⓁⓁ'}</Text>
+                
                 </View>
                 </View>
          

@@ -1,5 +1,6 @@
 import React from 'react';
-import { View, Dimensions, ScrollView, Text, ImageBackground, Platform, Vibration, Image} from 'react-native';
+import { View, Dimensions, ScrollView, Text, ImageBackground, Platform, Vibration, Image, Animated,  NativeModules,
+  LayoutAnimation} from 'react-native';
 import { Permissions, MediaLibrary, FileSystem } from 'expo';
 
 import LottieView from "lottie-react-native";
@@ -13,6 +14,8 @@ import GradientButton from 'react-native-gradient-buttons'
 
 import FaceImageGrid from "./FaceImageGrid"
  
+const { UIManager } = NativeModules;
+
 const { width: winWidth, height: winHeight } = Dimensions.get('window');
 
 import * as actionCreators from '../../store/actions'
@@ -20,23 +23,31 @@ import * as actionCreators from '../../store/actions'
 import { connect } from "react-redux";
 
 import styles from './styles';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { TouchableOpacity, TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
 import LargeImage from './LargeImage'
 
 
  class ImagesList extends React.Component {
 
+ 
+
+  scrollYAnimatedValue= new Animated.Value(0)
+
   state = {
     modalVisible:false,
 }
 
   componentDidMount() {
+    UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true)
+    LayoutAnimation.spring();
     this.getCameraRollPermissions();
     console.log("RECEIVED IMAGES", this.props.faceImagesList)
   }
 
-
+  goToTop = () => {
+    this.scroll.scrollTo({x: 0, y: 0, animated: true});
+ }
   async saveToCache(image) {
    
       const extension = image.link.slice((image.link.lastIndexOf(".") - 1 >>> 0) + 2)
@@ -91,77 +102,174 @@ import LargeImage from './LargeImage'
     else alert("Select Photos you would like to download")
   }
 
+  headerHeight= 150;
   FaceImageElement = React.createRef();
 
-  static navigationOptions = () => {
-
-    state = {
-      rollGranted: true,
-    };
-
-    return {
-      title: "Your Photos",
-    };
+  static navigationOptions = {
+    header:null
   };
+  
   imagesList = this.props.faceImagesList.map( (img,index) => (   
     <FaceImageGrid image={img.link} i={index}/>
    ))
      render (){
+
+
+     
+    
+        
+
+        
+        const secondBar = this.scrollYAnimatedValue.interpolate(
+              {
+              inputRange: [(winHeight*0.08)+150,(winHeight*0.13)+150],
+              outputRange: [0, winHeight*0.05],
+              extrapolate:"clamp",
+              useNativeDriver: true,
+              })
+
+
+              const iconOpacity = this.scrollYAnimatedValue.interpolate(
+                {
+                inputRange: [(winHeight*0.08)+150,(winHeight*0.13)+150],
+                outputRange: [0, 1],
+                extrapolate:"clamp",
+                useNativeDriver: true,
+                })
+              
+
+    
+        
+   
+
       if(!this.props.faceImagesList.length){
       return (
         <Image source={require('./assets/facescan.gif')} style={{height:winHeight, width:winWidth}} />
       )
       }else{
         return(
-    <View style={{marginBottom:50,}} >
-     <View style={{flexDirection:"row"}}>
-     <View style={{ borderColor:"white", borderWidth:0.3, flexDirection:"row", width:winWidth/2, alignItems:"center", justifyContent:"center"}}>
+    <View style={{top:20}}>
+
+      
+   
+     
+     <Animated.View style={{flexDirection:"row", height:secondBar, backgroundColor:"white"}}>
+
+     {this.props.selectedImages.length? 
+     <View style={{ borderColor:"white", borderWidth:0.3, flexDirection:"row", width:winWidth/4, alignItems:"center", justifyContent:"center"}}>
+      <TouchableOpacity onPress={()=> this.props.selectAllImages()}>
+      <Animated.Image source={require('./assets/selectall.png')} style={{height:winHeight*0.03, width:winHeight*0.03}}/>
+      </TouchableOpacity>
+    </View>:
+    <View style={{ borderColor:"white", borderWidth:0.3, flexDirection:"row", width:winWidth/4, alignItems:"center", justifyContent:"center"}}>
+      <TouchableOpacity  onPress={this.goToTop}>
+      <Animated.Image source={require('./assets/logo.png')} style={{height:winHeight*0.03, width:winHeight*0.03}}/>
+      </TouchableOpacity>
+    </View>
+    }
+
+    {this.props.selectedImages.length? 
+    <View style={{ borderColor:"white", borderWidth:0.3, flexDirection:"row", width:winWidth/4, alignItems:"center", justifyContent:"center"}}>
+      <TouchableOpacity onPress={()=> this.props.deSelectAllImages()}>
+      <Animated.Image source={require('./assets/unselect.png')} style={{height:winHeight*0.03, width:winHeight*0.03}}/>
+      </TouchableOpacity>
+    </View>:
+    <View style={{ borderColor:"white", borderWidth:0.3, flexDirection:"row", width:winWidth/4, alignItems:"center", justifyContent:"center"}}>
+      <TouchableOpacity onPress={this.goToTop}>
+      <Animated.Image source={require('./assets/logo-text.png')} style={{height:winHeight*0.03, width:winHeight*0.1159282371294}}/>
+      </TouchableOpacity>
+    </View>
+    }
+
+     <View style={{ borderColor:"white", borderWidth:0.3, flexDirection:"row", width:winWidth/4, alignItems:"center", justifyContent:"center"}}>
      {this.props.selectedImages.length == this.props.faceImagesList.length?
-      <ImageBackground source={require('./assets/deactive-carousel.png')} style={{height:winHeight*0.03, width:winHeight*0.034, top:5, marginBottom:10}}></ImageBackground>:
+      <Animated.Image source={require('./assets/deactive-carousel.png')} style={{height:winHeight*0.03, width:winHeight*0.034}}/>:
       <TouchableOpacity onPress={()=>this.props.navigation.navigate("DeckView")}>
-      <ImageBackground source={require('./assets/carousel.png')} style={{height:winHeight*0.03, width:winHeight*0.034, top:5, marginBottom:10}}></ImageBackground>
+      <Animated.Image source={require('./assets/carousel.png')} style={{height:winHeight*0.03, width:winHeight*0.034, opacity:iconOpacity}}/>
       </TouchableOpacity>
       }
-    
+    </View>
+{this.props.selectedImages.length?
+  <View style={{ borderColor:"white", borderWidth:0.3, flexDirection:"row", width:winWidth/4, alignItems:"center", justifyContent:"center"}}>
+  <TouchableOpacity onPress={this.handleDownload}>
+  <Animated.Image source={require('./assets/download.png')} style={{height:winHeight*0.03, width:winHeight*0.045}}/>
+  </TouchableOpacity>
+</View>:
+<View style={{ borderColor:"white", borderWidth:0.3, flexDirection:"row", width:winWidth/4, alignItems:"center", justifyContent:"center"}}>
+  <Animated.Image source={require('./assets/deactive-download.png')} style={{height:winHeight*0.03, width:winHeight*0.045, opacity:iconOpacity}}/>
+</View>
+}
+     </Animated.View>
+
+                    <ScrollView
+                    ref={(c) => {this.scroll = c}}
+                    scrollEventThrottle={16}
+                    onScroll= {Animated.event(
+                    [{ nativeEvent: { contentOffset: { y: this.scrollYAnimatedValue } } }]
+                    )}
+                    >
+
+                    
+                    <Animated.View style={{height:150}}>
+                    <View style={{flexDirection:"row"}}>
+                    <Image source={{uri:"https://img1.wsimg.com/isteam/ip/a74907d3-f978-4a71-925d-0709e1e5f63c/logo/87657930-5999-41c9-8d55-c201b2f378d2.png/:/rs=h:800/qt=q:95"}} style={{height:winHeight*0.1, width:winHeight*0.1, borderColor:"white", borderRadius:60, borderWidth:1, left:10, top:10}}></Image>
+                   <View style={{left:30,top:20}}>
+                   <Text style={{ fontSize:26, color:"navy", fontWeight:"900"}}> EVENT NAME </Text>
+                   <Text style={{ left:5,width:winWidth*0.7,fontSize:22, color:"grey", fontWeight:"300"}}>This is the description of the event. you can write whatever you want here. </Text>
+                   </View>
+                  </View>
+                   </Animated.View>
+
+                         
+     <Animated.View style={{flexDirection:"row", height:winHeight*0.05, backgroundColor:"white"}}>
+     <View style={{ borderColor:"white", borderWidth:0.3, flexDirection:"row", width:winWidth/2, alignItems:"center", justifyContent:"center"}}>
+     {this.props.selectedImages.length == this.props.faceImagesList.length?
+      <Animated.Image source={require('./assets/deactive-carousel.png')} style={{height:winHeight*0.03, width:winHeight*0.034}}/>:
+      <TouchableOpacity onPress={()=>this.props.navigation.navigate("DeckView")}>
+      <Animated.Image source={require('./assets/carousel.png')} style={{height:winHeight*0.03, width:winHeight*0.034}}/>
+      </TouchableOpacity>
+      }
     </View>
 {this.props.selectedImages.length?
   <View style={{ borderColor:"white", borderWidth:0.3, flexDirection:"row", width:winWidth/2, alignItems:"center", justifyContent:"center"}}>
   <TouchableOpacity onPress={this.handleDownload}>
-  <ImageBackground source={require('./assets/download.png')} style={{height:winHeight*0.03, width:winHeight*0.045, top:5, marginBottom:10}}></ImageBackground>
+  <Animated.Image source={require('./assets/download.png')} style={{height:winHeight*0.03, width:winHeight*0.045}}/>
   </TouchableOpacity>
 </View>:
 <View style={{ borderColor:"white", borderWidth:0.3, flexDirection:"row", width:winWidth/2, alignItems:"center", justifyContent:"center"}}>
-  <ImageBackground source={require('./assets/deactive-download.png')} style={{height:winHeight*0.03, width:winHeight*0.045, top:5, marginBottom:10}}></ImageBackground>
+  <Animated.Image source={require('./assets/deactive-download.png')} style={{height:winHeight*0.03, width:winHeight*0.045}}/>
 </View>
 }
-
-     </View>
+     </Animated.View>
 
   
      {/* <TouchableOpacity onPress={()=>this.props.navigation.replace("DeckView")}>
      <ImageBackground source={{uri:"https://static.thenounproject.com/png/690222-200.png"}} style={{height:winHeight/15, width:winWidth/10}}></ImageBackground>
      </TouchableOpacity> */}
     
+    
     {this.props.selectedImages.length? 
-    <View style={{flexDirection:"row",marginBottom:10 ,marginTop:10}}>
+    <Animated.View style={{flexDirection:"row", height:winHeight*0.03}}>
 
-    <View style={{ borderColor:"white", borderWidth:0.3, flexDirection:"row", width:winWidth/3, alignItems:"center", justifyContent:"center"}}>
-      <Text style={{fontWeight:"700", fontSize:12, textAlignVertical:"center", marginRight:10}}> {this.props.selectedImages.length}/{this.props.faceImagesList.length} SELECTED</Text>
+    <TouchableWithoutFeedback>
+    <View style={{borderColor:"white", borderWidth:0.3, flexDirection:"row", width:winWidth/3, alignItems:"center", justifyContent:"center"}}>
+      <Animated.Text style={{   fontWeight:"700", fontSize:12, marginRight:10 }}> {this.props.selectedImages.length}/{this.props.faceImagesList.length} SELECTED</Animated.Text>
      </View>
+     </TouchableWithoutFeedback>
    
    <TouchableOpacity onPress={()=> this.props.selectAllImages()}>
     <View style={{ borderColor:"white", borderWidth:0.3, flexDirection:"row", width:winWidth/3, alignItems:"center", justifyContent:"center"}}>
-      <Text style={{fontWeight:"700", fontSize:12, textAlignVertical:"center", marginRight:10}}>SELECT ALL</Text>
+      <Animated.Text style={{fontWeight:"700", fontSize:12, marginRight:10}}>SELECT ALL</Animated.Text>
      </View>
   </TouchableOpacity>
   <TouchableOpacity onPress={()=> this.props.deSelectAllImages()}>
      <View style={{ borderColor:"white", borderWidth:0.3, flexDirection:"row", width:winWidth/3, alignItems:"center", justifyContent:"center"}}>
-      <Text style={{fontWeight:"700", fontSize:12, textAlignVertical:"center", marginRight:10}}>DESELECT ALL</Text>
+      <Animated.Text style={{fontWeight:"700", fontSize:12, marginRight:10}}>DESELECT ALL</Animated.Text>
      </View>
   </TouchableOpacity>
-     </View>
-     :null}       
-                    <ScrollView>
+     </Animated.View>
+     :null}  
+
                       <View style={{flex:1,flexDirection:"row", flexWrap:'wrap'}}>
                       {this.props.faceImagesList.map( (img,index) => (   
     <FaceImageGrid image={img.link} i={index}/>
